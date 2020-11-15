@@ -1,0 +1,229 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>红黑树一之2-3树 | DeelSilcon的个人博客</title><meta name="keywords" content="树,搜索树,符号表"><meta name="author" content="Deelsilcon"><meta name="copyright" content="Deelsilcon"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="红黑树（1）介绍红黑二叉查找树是与2-3查找树等价的一种查找树；现在先给出它的一个定义（左斜的红黑树）：  树中的链接有两种：红色链接和黑色链接； 树中红色链接都是左链接； 没有任何一个节点同时和两条红色链接相连； 这个数是完全黑色平衡的，即任何空链接到根结点的路径上的黑链接数目相同；  为了学习红黑查找树，首先要学习2-3查找树；对于一棵2-3查找树：要么它为一棵空树，要么它由下列结点组成：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="红黑树一之2-3树">
+<meta property="og:url" content="http://deelsilcon.com/2020/11/15/%E7%BA%A2%E9%BB%91%E6%A0%91%EF%BC%881%EF%BC%89/index.html">
+<meta property="og:site_name" content="DeelSilcon的个人博客">
+<meta property="og:description" content="红黑树（1）介绍红黑二叉查找树是与2-3查找树等价的一种查找树；现在先给出它的一个定义（左斜的红黑树）：  树中的链接有两种：红色链接和黑色链接； 树中红色链接都是左链接； 没有任何一个节点同时和两条红色链接相连； 这个数是完全黑色平衡的，即任何空链接到根结点的路径上的黑链接数目相同；  为了学习红黑查找树，首先要学习2-3查找树；对于一棵2-3查找树：要么它为一棵空树，要么它由下列结点组成：">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2020/11/15/Jonfl73xP1O5Kst.png">
+<meta property="article:published_time" content="2020-11-14T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-11-15T15:18:07.209Z">
+<meta property="article:author" content="Deelsilcon">
+<meta property="article:tag" content="树">
+<meta property="article:tag" content="搜索树">
+<meta property="article:tag" content="符号表">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2020/11/15/Jonfl73xP1O5Kst.png"><link rel="shortcut icon" href="/img/deelsilcon.png"><link rel="canonical" href="http://deelsilcon.com/2020/11/15/%E7%BA%A2%E9%BB%91%E6%A0%91%EF%BC%881%EF%BC%89/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  hexoversion: '5.2.0',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Deelsilcon","link":"链接: ","source":"来源: DeelSilcon的个人博客","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isSidebar: true,
+  postUpdate: '2020-11-15 23:18:07'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {
+  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }
+})()</script><meta name="generator" content="Hexo 5.2.0"></head><body><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="/img/timg.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">9</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">9</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">2</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div id="body-wrap"><div id="sidebar"><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%A2%E9%BB%91%E6%A0%91%EF%BC%881%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">红黑树（1）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3%E6%9F%A5%E6%89%BE%E6%A0%91%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="toc-number">1.2.</span> <span class="toc-text">2-3查找树的基本操作</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E6%89%BE"><span class="toc-number">1.2.1.</span> <span class="toc-text">查找</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8F%92%E5%85%A5"><span class="toc-number">1.2.2.</span> <span class="toc-text">插入</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#2-%E7%BB%93%E7%82%B9%E4%B8%AD%E6%8F%92%E5%85%A5%E6%96%B0%E9%94%AE"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">2-结点中插入新键</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%8D%95%E4%B8%803-%E7%BB%93%E7%82%B9%E4%B8%AD%E6%8F%92%E5%85%A5%E6%96%B0%E9%94%AE"><span class="toc-number">1.2.2.2.</span> <span class="toc-text">单一3-结点中插入新键</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%90%91%E4%B8%80%E4%B8%AA%E7%88%B6%E7%BB%93%E7%82%B9%E4%B8%BA2%E2%80%93%E7%BB%93%E7%82%B9%E7%9A%843-%E7%BB%93%E7%82%B9%E4%B8%AD%E6%8F%92%E5%85%A5%E6%96%B0%E9%94%AE"><span class="toc-number">1.2.2.3.</span> <span class="toc-text">向一个父结点为2–结点的3-结点中插入新键</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%90%91%E4%B8%80%E4%B8%AA%E7%88%B6%E7%BB%93%E7%82%B9%E4%B8%BA3-%E7%BB%93%E7%82%B9%E7%9A%843-%E7%BB%93%E7%82%B9%E4%B8%AD%E6%8F%92%E5%85%A5%E6%96%B0%E9%94%AE"><span class="toc-number">1.2.2.4.</span> <span class="toc-text">向一个父结点为3-结点的3-结点中插入新键</span></a></li></ol></li></ol></li></ol></li></ol></div></div></div><header class="post-bg" id="page-header" style="background-image: url(https://i.loli.net/2020/11/15/Jonfl73xP1O5Kst.png)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">DeelSilcon的个人博客</a></span><span id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">红黑树一之2-3树</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-11-14T16:00:00.000Z" title="发表于 2020-11-15 00:00:00">2020-11-15</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-11-15T15:18:07.209Z" title="更新于 2020-11-15 23:18:07">2020-11-15</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>3分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><h2 id="红黑树（1）"><a href="#红黑树（1）" class="headerlink" title="红黑树（1）"></a>红黑树（1）</h2><h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>红黑二叉查找树是与2-3查找树等价的一种查找树；现在先给出它的一个定义（左斜的红黑树）：</p>
+<ul>
+<li>树中的链接有两种：红色链接和黑色链接；</li>
+<li>树中红色链接都是左链接；</li>
+<li>没有任何一个节点同时和两条红色链接相连；</li>
+<li>这个数是<em>完全黑色平衡</em>的，即任何空链接到根结点的路径上的黑链接数目相同；</li>
+</ul>
+<p>为了学习红黑查找树，首先要学习2-3查找树；对于一棵2-3查找树：要么它为一棵空树，要么它由下列结点组成：</p>
+<ul>
+<li>2-结点：普通的二叉搜索树中的结点类型，含有两个链接和一个结点键（及对应值）；</li>
+<li>3-结点：含有三个链接和两个结点键，左链接指向的子树中的结点键小于该节点的任意一个键；中间链接指向的子树中的结点键位于该结点两个键之间，右链接指向的子树中的结点键大于该节点的任意一个键。</li>
+</ul>
+<p><img src="https://i.loli.net/2020/11/15/p1oJUeS8nWFTvih.png" alt="image-20201115222657583"></p>
+<p>对2-3查找树结点的实现先放在一边，重点关注其中保持能够实现保持平衡的各种操作；</p>
+<h3 id="2-3查找树的基本操作"><a href="#2-3查找树的基本操作" class="headerlink" title="2-3查找树的基本操作"></a>2-3查找树的基本操作</h3><h4 id="查找"><a href="#查找" class="headerlink" title="查找"></a>查找</h4><p>这个操作按照普通的二叉搜索树的思想即可实现，我们比较查找键与结点键的大小，更据结果递归的进入区间来查找即可。</p>
+<p><img src="https://i.loli.net/2020/11/15/VuSQGZdBA1cKsem.png" alt="image-20201115223327503.png"></p>
+<ul>
+<li>首先比较 <code>H</code> 与 <code>M</code>, 进入左结点；</li>
+<li>比较 <code>H</code> 与 <code>E</code>和<code>j</code>, 进入中间；</li>
+<li>查找命中；</li>
+</ul>
+<h4 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h4><p>一个初步的想法是，和二叉搜索树一样进行一次未命中的查找，然后把新结点挂在树的底部，但这样有一个明显的缺点，树的平衡性被破坏，没有达到我们使用2-3树的要求：一个完美平衡的查找树；下面分类讨论插入的情形。</p>
+<h5 id="2-结点中插入新键"><a href="#2-结点中插入新键" class="headerlink" title="2-结点中插入新键"></a>2-结点中插入新键</h5><p>只需要将2-结点替换为3-结点并将待插入的键保存在其中即可；</p>
+<p><img src="https://i.loli.net/2020/11/15/JdN4wPqsn9fyrOM.png" alt="image-20201115224026201"></p>
+<h5 id="单一3-结点中插入新键"><a href="#单一3-结点中插入新键" class="headerlink" title="单一3-结点中插入新键"></a>单一3-结点中插入新键</h5><p>这个用以作为例子给予我们启示：我们先将这个键临时存储到这个3-结点中，形成临时的4-结点；注意，这个结点很容易转换为3个2-结点的2-3查找树，这个性质很重要！</p>
+<blockquote>
+<p>4-结点可以转化为3个2-结点的2-3查找树！！！</p>
+</blockquote>
+<p><img src="https://i.loli.net/2020/11/15/wZ8fbTxE1h6prYP.png" alt="image-20201115224845599"></p>
+<h5 id="向一个父结点为2–结点的3-结点中插入新键"><a href="#向一个父结点为2–结点的3-结点中插入新键" class="headerlink" title="向一个父结点为2–结点的3-结点中插入新键"></a>向一个父结点为2–结点的3-结点中插入新键</h5><p>我们同上面的例子一样构造一个临时的4-结点，然后将这个结点中的中键元素上移动与父结点合成一个3-结点，可以验证这样的操作后树还是有序和完美平衡的。</p>
+<p><img src="https://i.loli.net/2020/11/15/mwTODrqj9dyvPGY.png" alt="image-20201115225243276"></p>
+<h5 id="向一个父结点为3-结点的3-结点中插入新键"><a href="#向一个父结点为3-结点的3-结点中插入新键" class="headerlink" title="向一个父结点为3-结点的3-结点中插入新键"></a>向一个父结点为3-结点的3-结点中插入新键</h5><p>我们同上面例子一样构造一个临时的4-结点，然后将这个结点中的中键元素上移动与父结点合成一个4-结点，如此这般将中键往上移动，直到遇到一个2-结点或者到根结点；如果在根结点还是合成一个4-结点，我们就用刚才那个重要的性质，分解为3个2-结点；可以验证这样的操作后树还是有序和完美平衡的。</p>
+<p><img src="https://i.loli.net/2020/11/15/YgEW5fRh1Fcnr8o.png" alt="image-20201115230055498"></p>
+<p>我们这里并未讨论向上移动的细节，因为这根据2-3树的定义构造和扩展（4-结点的定义可以相似的给出），是十分简单的。</p>
+<p>下面给出一个简单的图示证明完美平衡性的保持：</p>
+<p><img src="https://i.loli.net/2020/11/15/7xLJcXHKaVBGQNe.png" alt="image-20201115230259542.png"></p>
+<p>根据上面的算法，可以看出2-3树的生长是自底向上的，它在最坏情况下仍有较好的性能，每个操作中处理每个结点的时间都不会超过一个常数，且上述的两个操作都只会访问一条路径上的结点，故任何查找和插入的成本都不会超过对数级别。</p>
+</div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Deelsilcon</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://deelsilcon.com/2020/11/15/%E7%BA%A2%E9%BB%91%E6%A0%91%EF%BC%881%EF%BC%89/">http://deelsilcon.com/2020/11/15/%E7%BA%A2%E9%BB%91%E6%A0%91%EF%BC%881%EF%BC%89/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://deelsilcon.com" target="_blank">DeelSilcon的个人博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%A0%91/">树</a><a class="post-meta__tags" href="/tags/%E6%90%9C%E7%B4%A2%E6%A0%91/">搜索树</a><a class="post-meta__tags" href="/tags/%E7%AC%A6%E5%8F%B7%E8%A1%A8/">符号表</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2020/11/15/Jonfl73xP1O5Kst.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2020/11/04/%E5%90%88%E5%B9%B6%E5%8C%BA%E9%97%B4/"><img class="next-cover" src="https://i.loli.net/2020/11/04/JHUOt5neZcClIKs.png" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">合并区间问题</div></div></a></div></nav></article></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By Deelsilcon</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></section><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  var script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script defer="defer" id="fluttering_ribbon" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-nest.min.js"></script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-heart.min.js" async="async" mobile="false"></script></div></body></html>
