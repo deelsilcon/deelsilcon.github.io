@@ -1,0 +1,205 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>跳表 | DeelSilcon的个人博客</title><meta name="keywords" content="数据结构"><meta name="author" content="Deelsilcon"><meta name="copyright" content="Deelsilcon"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="数据结构中的一个支持快速插入、删除的结构的介绍----跳表">
+<meta property="og:type" content="article">
+<meta property="og:title" content="跳表">
+<meta property="og:url" content="http://deelsilcon.com/2021/03/15/%E8%B7%B3%E8%A1%A8/index.html">
+<meta property="og:site_name" content="DeelSilcon的个人博客">
+<meta property="og:description" content="数据结构中的一个支持快速插入、删除的结构的介绍----跳表">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg">
+<meta property="article:published_time" content="2021-03-14T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-03-15T12:42:00.593Z">
+<meta property="article:author" content="Deelsilcon">
+<meta property="article:tag" content="数据结构">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg"><link rel="shortcut icon" href="/img/deelsilcon.png"><link rel="canonical" href="http://deelsilcon.com/2021/03/15/%E8%B7%B3%E8%A1%A8/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  hexoversion: '5.2.0',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Deelsilcon","link":"链接: ","source":"来源: DeelSilcon的个人博客","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isSidebar: true,
+  postUpdate: '2021-03-15 20:42:00'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {
+  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }
+})()</script><meta name="generator" content="Hexo 5.2.0"></head><body><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="/img/timg.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">19</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">16</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">5</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div id="body-wrap"><div id="sidebar"><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%B3%E8%A1%A8"><span class="toc-number">1.</span> <span class="toc-text">跳表</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%88%86%E6%9E%90"><span class="toc-number">1.1.</span> <span class="toc-text">复杂度分析</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A9%BA%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6"><span class="toc-number">1.1.1.</span> <span class="toc-text">空间复杂度</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6"><span class="toc-number">1.1.2.</span> <span class="toc-text">时间复杂度</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.2.</span> <span class="toc-text">实现</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E8%8A%82%E7%82%B9%E7%9A%84%E6%9C%80%E5%A4%A7%E5%B1%82%E6%95%B0"><span class="toc-number">1.2.1.</span> <span class="toc-text">获取节点的最大层数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2"><span class="toc-number">1.2.2.</span> <span class="toc-text">查询</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8F%92%E5%85%A5"><span class="toc-number">1.2.3.</span> <span class="toc-text">插入</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A0%E9%99%A4"><span class="toc-number">1.2.4.</span> <span class="toc-text">删除</span></a></li></ol></li></ol></li></ol></div></div></div><header class="post-bg" id="page-header" style="background-image: url(https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">DeelSilcon的个人博客</a></span><span id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">跳表</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-03-14T16:00:00.000Z" title="发表于 2021-03-15 00:00:00">2021-03-15</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-03-15T12:42:00.593Z" title="更新于 2021-03-15 20:42:00">2021-03-15</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>4分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><h2 id="跳表"><a href="#跳表" class="headerlink" title="跳表"></a>跳表</h2><p>跳表（Skip List）是由 William Pugh 发明的一种查找数据结构，支持对数据的快速查找，插入和删除。跳表的期望空间复杂度为 $\mathcal{O}(n)$，跳表的查询，插入和删除操作的期望时间复杂度都为 $\mathcal{O}(n)$。</p>
+<p>为说明简单起见，下面假设所有的有序链表都是按照存储的数据都是升序排列的。</p>
+<p>跳表被设计为层次型的结构，最底层是普通的链表。然后每个更高层作为对下面层链表的“指引”。具体来讲，一个出现在$i$层的元素出现在第$i+1$层的概率为$P$，其中$P$是已设定的固定值</p>
+<p><img src="!%5B%5D(https://i.loli.net/2021/03/15/Hi2PLQtTpb5l8cY.png" alt="image-20210315195839820"></p>
+<h3 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h3><h4 id="空间复杂度"><a href="#空间复杂度" class="headerlink" title="空间复杂度"></a>空间复杂度</h4><p>对于一个节点，节点的层数为$H$的概率为$P^{H-1}(1-P)$，故跳表的期望的层数为：<br>$$<br>\sum_{i \ge 1}^{\infin}P^{H-1}(1-P) = \dfrac{1}{1-P}<br>$$<br>因为$P$为常数，所以期望空间复杂度为$\mathcal{O}(n)$</p>
+<h4 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h4><p>首先，由于第$i$层的期望节点个数为$nP^{i-1}$，很容易知道，期望包含$\dfrac{1}{P}$个元素的层$L = \log_{\frac{1}{P}}n$；在跳表中的查找需要从$L$层开始水平地逐个比较直到当前节点的下一个节点大于等于目标节点，然后移到下一层。我们从后向前分析查找路径，令$C(i)$为在一个跳表中上爬$i$层的期望代价，则有：<br>$$<br>\begin{align}<br>C(0 ) &amp;= 0\<br>C(i) &amp;= (1-P)(1+C(i)) + P(1+C(i-1))<br>\end{align}<br>$$<br>可以解得$C(i) = \dfrac{i}{P}$；那么到达从$0$层到$L$层的期望代价为$\dfrac{L-1}{P}$；接下来，只需要分析$L$层间进行水平移动的代价即可。而这个水平移动的代价一定不会超过所有$L$层及其上层节点数总和，而易求得这个节点数总和的期望为$\dfrac{1}{P}$，故期望的查找的代价为$\dfrac{L-1}{P} + \dfrac{2}{P}$，再结合$L$的值，得出跳表查询的期望时间复杂度为$\mathcal{O}(\log n)$。</p>
+<p>对于插入和删除，都会先进行查询，然后常数的修改操作，故相应的时间复杂度也是对数级别。</p>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><h4 id="获取节点的最大层数"><a href="#获取节点的最大层数" class="headerlink" title="获取节点的最大层数"></a>获取节点的最大层数</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">randomLevel</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> lv = <span class="number">1</span>;</span><br><span class="line">  <span class="comment">// MAXL = 32, S = 0xFFFF, PS = S * P, P = 1 / 4</span></span><br><span class="line">  <span class="keyword">while</span> ((rand() &amp; S) &lt; PS) ++lv;</span><br><span class="line">  <span class="keyword">return</span> min(MAXL, lv);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">V&amp; <span class="title">find</span><span class="params">(<span class="keyword">const</span> K&amp; key)</span> </span>&#123;</span><br><span class="line">  SkipListNode&lt;K, V&gt;* p = head;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 找到该层最后一个键值小于key的节点，然后走向下一层</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = level; i &gt;= <span class="number">0</span>; --i) &#123;</span><br><span class="line">    <span class="keyword">while</span> (p-&gt;forward[i]-&gt;key &lt; key) &#123;</span><br><span class="line">      p = p-&gt;forward[i];</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 现在是小于，所以还需要再往后走一步</span></span><br><span class="line">  p = p-&gt;forward[<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 成功找到节点</span></span><br><span class="line">  <span class="keyword">if</span> (p-&gt;key == key) <span class="keyword">return</span> p-&gt;value;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 节点不存在，返回INVALID</span></span><br><span class="line">  <span class="keyword">return</span> tail-&gt;value;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">insert</span><span class="params">(<span class="keyword">const</span> K &amp;key, <span class="keyword">const</span> V &amp;value)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 用于记录需要修改的节点</span></span><br><span class="line">  SkipListNode&lt;K, V&gt; *update[MAXL + <span class="number">1</span>];</span><br><span class="line"></span><br><span class="line">  SkipListNode&lt;K, V&gt; *p = head;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = level; i &gt;= <span class="number">0</span>; --i) &#123;</span><br><span class="line">    <span class="keyword">while</span> (p-&gt;forward[i]-&gt;key &lt; key) &#123;</span><br><span class="line">      p = p-&gt;forward[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 第i层需要修改的节点为p</span></span><br><span class="line">    update[i] = p;</span><br><span class="line">  &#125;</span><br><span class="line">  p = p-&gt;forward[<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 若已存在则修改</span></span><br><span class="line">  <span class="keyword">if</span> (p-&gt;key == key) &#123;</span><br><span class="line">    p-&gt;value = value;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 获取新节点的最大层数</span></span><br><span class="line">  <span class="keyword">int</span> lv = randomLevel();</span><br><span class="line">  <span class="keyword">if</span> (lv &gt; level) &#123;</span><br><span class="line">    lv = ++level;</span><br><span class="line">    update[lv] = head;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 新建节点</span></span><br><span class="line">  SkipListNode&lt;K, V&gt; *newNode = <span class="keyword">new</span> SkipListNode&lt;K, V&gt;(key, value, lv);</span><br><span class="line">  <span class="comment">// 在第0-lv层插入新节点</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = lv; i &gt;= <span class="number">0</span>; --i) &#123;</span><br><span class="line">    p = update[i];</span><br><span class="line">    newNode-&gt;forward[i] = p-&gt;forward[i];</span><br><span class="line">    p-&gt;forward[i] = newNode;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  ++length;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">erase</span><span class="params">(<span class="keyword">const</span> K &amp;key)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 用于记录需要修改的节点</span></span><br><span class="line">  SkipListNode&lt;K, V&gt; *update[MAXL + <span class="number">1</span>];</span><br><span class="line"></span><br><span class="line">  SkipListNode&lt;K, V&gt; *p = head;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = level; i &gt;= <span class="number">0</span>; --i) &#123;</span><br><span class="line">    <span class="keyword">while</span> (p-&gt;forward[i]-&gt;key &lt; key) &#123;</span><br><span class="line">      p = p-&gt;forward[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 第i层需要修改的节点为p</span></span><br><span class="line">    update[i] = p;</span><br><span class="line">  &#125;</span><br><span class="line">  p = p-&gt;forward[<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 节点不存在</span></span><br><span class="line">  <span class="keyword">if</span> (p-&gt;key != key) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 从最底层开始删除</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= level; ++i) &#123;</span><br><span class="line">    <span class="comment">// 如果这层没有p删除就完成了</span></span><br><span class="line">    <span class="keyword">if</span> (update[i]-&gt;forward[i] != p) &#123;</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 断开p的连接</span></span><br><span class="line">    update[i]-&gt;forward[i] = p-&gt;forward[i];</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 回收空间</span></span><br><span class="line">  <span class="keyword">delete</span> p;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 删除节点可能会是最大层数减少</span></span><br><span class="line">  <span class="keyword">while</span> (level &gt; <span class="number">0</span> &amp;&amp; head-&gt;forward[level] == tail) --level;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 跳表长度</span></span><br><span class="line">  --length;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Deelsilcon</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://deelsilcon.com/2021/03/15/%E8%B7%B3%E8%A1%A8/">http://deelsilcon.com/2021/03/15/%E8%B7%B3%E8%A1%A8/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://deelsilcon.com" target="_blank">DeelSilcon的个人博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2021/03/13/%E4%BA%92%E6%96%A5%E6%9C%BA%E5%88%B6%E4%B8%8E%E9%94%81/"><img class="next-cover" src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">互斥与锁（1）</div></div></a></div></nav></article></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Deelsilcon</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></section><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  var script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script defer="defer" id="fluttering_ribbon" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-nest.min.js"></script></div></body></html>
