@@ -1,72 +1,57 @@
 ---
 layout: default
-title: Home
+title: Bowen Wang's Profile
 notitle: true
-
-# groups of columns of {roles: list, width: num, image: bool}
-role-tables:
-- - roles: [faculty, postdoc, staff]
-    width: 4
-    image: true
-  - roles: [grad]
-    width: 8
-    image: true
-- - roles: [collab, ugrad, ugrad-alum]
-    width: 5
-    image: false
-  - roles: [alum]
-    width: 7
-    image: false
 
 ---
 
-<div class="jumbotron">
-    <p>
-        <b>肖航课题组</b>开发了首个<b>基于字符串的可逆晶体表示法: SLICES</b>,实现了生成式AI驱动的<b>Text2Crystal</b>。SLICES有望成为AI驱动的晶体材料逆向设计的标准工具,即<b>晶体材料的"SMILES"</b>。 
-    </p>
-    <p>
-    The <b>XIAO Research Group</b> developed the first <b>string-based invertible, invariant crystallographic representation: SLICES</b>, achieving <b>Text2Crystal</b> powered by generative AI. SLICES has the potential to become a standard tool for <i> in-silico </i> materials discovery, i.e. "SMILES" for crystal structures.
-    </p>
+<div class="jumbotron text-center">
+    <h1>Bowen Wang</h1>
+    <p>Bachelor of Communication | Master of Digital Media & Business Management</p>
+    <p>Email: <a href="mailto:1300190938@qq.com">1300190938@qq.com</a> | Phone: 18363982688 (59588079)</p>
 </div>
 
-<script
-	type="module"
-	src="https://gradio.s3-us-west-2.amazonaws.com/4.41.0/gradio.js"
-></script>
-
-<gradio-app src="https://xiaohang07-slices.hf.space" theme_mode="light"></gradio-app>
-
-<gradio-app src="https://xiaohang07-mattergpt-cpu.hf.space" theme_mode="light"></gradio-app>
-
-
-<section>
-    <h2>News</h2>
-    <ul class="news list-unstyled">
-        {% for post in site.posts limit: site.front_page_news %}
-            {% include news-item.html item=post %}
-        {% endfor %}
-    </ul>
-    {% assign numposts = site.posts | size %}
-    {% if numposts >= 1 %}
+<div class="container">
+    <section>
+        <h2>About Me</h2>
         <p>
-            <span class="fa fa-fw fa-history"></span>
-            <a href="{{ site.base }}/blog.html">Older posts&hellip;</a>
+            I am currently pursuing a Master's degree in Digital Media and Business Management at Lingnan University of Hong Kong. With a Bachelor's degree in Communication, my goal is to bridge the gap between digital media and business, leveraging technology for creative and effective business solutions.
         </p>
-    {% endif %}
-</section>
+        <p>
+            I have a keen interest in the evolving field of digital media, and I am dedicated to gaining deeper insights into how modern business practices integrate with emerging digital trends.
+        </p>
+    </section>
 
+    <section>
+        <h2>Education</h2>
+        <ul>
+            <li><b>Master of Digital Media and Business Management</b>, Lingnan University of Hong Kong (Sep 2024 - Sep 2025)</li>
+            <li><b>Bachelor of Communication</b>, Lingnan University of Hong Kong (Sep 2019 - Jun 2023)</li>
+        </ul>
+    </section>
 
-<div id="people">
-    <h2>People</h2>
-    {% for role-table in page.role-tables %}
-        <section class="people row justify-content-between">
-            {% for role-column in role-table %}
-                <div class="col-md-{{ role-column.width }}">
-                    {% for role in role-column.roles %}
-                        {% include role-people.html role=role image=role-column.image %}
-                    {% endfor %}
-                </div>
-            {% endfor %}
-        </section>
-    {% endfor %}
+    <section>
+        <h2>Contact Information</h2>
+        <p>Email: <a href="mailto:1300190938@qq.com">1300190938@qq.com</a></p>
+        <p>Phone: 18363982688 (59588079)</p>
+    </section>
+
+    <section>
+        <h2>News</h2>
+        <ul>
+            <li>Sept 2024: Started Master's in Digital Media & Business Management at Lingnan University</li>
+            <li>Jun 2023: Graduated with a Bachelor's degree in Communication from Lingnan University</li>
+            <li>Dec 2022: Published paper on digital media's impact on business strategies</li>
+        </ul>
+    </section>
 </div>
+
+<!-- Placeholder for personal photo -->
+<div class="container text-center">
+    <h2>Personal Photo</h2>
+    <p>Insert personal photo here</p>
+</div>
+
+<footer class="text-center mt-5">
+    <p>&copy; 2024 Bowen Wang | All Rights Reserved</p>
+</footer>
